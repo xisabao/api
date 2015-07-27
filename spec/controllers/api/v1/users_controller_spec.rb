@@ -1,16 +1,15 @@
 require 'spec_helper'
 
 describe Api::V1::UsersController do
-#  before(:each) { request.headers['Accept'] = "applicatino/vnd.marketplace.v1" }
 
   describe "GET #show" do
     before(:each) do
       @user = FactoryGirl.create :user
-      get :show, id: @user.id, format: :json
+      get :show, id: @user.id
     end
 
     it "returns the information about a reporter on a hash" do
-      user_response = JSON.parse(response.body, symbolize_names: true)
+      user_response = json_response
       expect(user_response[:email]).to eql @user.email
     end
 
@@ -61,11 +60,11 @@ describe Api::V1::UsersController do
       before(:each) do
         @user = FactoryGirl.create :user
         patch :update, { id: @user.id,
-                         user: { email: "newmail@example.com" } }, format: :json
+                         user: { email: "newmail@example.com" } }
       end
 
       it "renders the json respresentation for the updated user" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql "newmail@example.com"
       end
 
@@ -77,7 +76,7 @@ describe Api::V1::UsersController do
       before(:each) do
         @user = FactoryGirl.create :user
         patch :update, { id: @user.id,
-                         user: { email: "bademail.com" } }, format: :json
+                         user: { email: "bademail.com" } }
       end
 
       it "renders a json error" do
@@ -93,6 +92,16 @@ describe Api::V1::UsersController do
       it { should respond_with 422 }
 
     end
+
+  end
+
+  describe "DELETE #destroy" do
+    before(:each) do
+      @user = FactoryGirl.create :user
+      delete :destroy, { id: @user.id }
+    end
+
+    it { should respond_with 204 }
 
   end
 

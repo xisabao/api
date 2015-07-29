@@ -15,8 +15,8 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.include Devise::TestHelpers, type: :controller
-  config.include Request::JsonHelpers, :type => :controller
-  config.include Request::HeaderHelpers, :type => :controller
+  config.include Request::HeadersHelpers, :type => :controller
+  config.include Request::JsonHelpers, type: :controller
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

@@ -28,6 +28,15 @@ gem 'furatto'
 gem 'font-awesome-rails'
 gem 'simple_form'
 
+#Driver gems
+gem 'watir-extensions-element-screenshot'
+gem 'selenium-webdriver'
+gem 'chromedriver-helper'
+gem 'watir-webdriver-rails'
+gem 'headless'
+gem 'nokogiri'
+gem 'watir'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

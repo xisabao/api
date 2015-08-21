@@ -28,6 +28,9 @@ gem 'furatto'
 gem 'font-awesome-rails'
 gem 'simple_form'
 
+#Production
+gem 'pg'
+
 #Driver gems
 gem 'watir-extensions-element-screenshot'
 gem 'selenium-webdriver'
@@ -68,3 +71,6 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+#Heroku Needs
+gem 'rails_12factor', group: :production

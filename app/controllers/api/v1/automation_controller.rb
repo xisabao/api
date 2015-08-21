@@ -114,7 +114,12 @@ class Api::V1::AutomationController < ApplicationController
     @log = driver.find_element(:tag_name, 'flash-messages').text
 
     if (@log.present?)
-      @log = "Error present! " + @log
+      @errors = driver.find_elements(:class, 'error')
+      @error_items = ""
+      @errors.each { |error|
+          @error_items += error.text + ", "
+      }
+      @log = "Error present! " + @log + " " + @error_items
       sleep 2
       driver.quit
     else
@@ -129,7 +134,7 @@ class Api::V1::AutomationController < ApplicationController
       driver.find_element(:css, 'input[ng-model="vm.form.formData.basicInfo.email"]').send_keys('example@example.com')
 
       #if personal != event
-      driver.find_element(:css, 'label[ng-model="vm.sameContact').click
+      #driver.find_element(:css, 'label[ng-model="vm.sameContact').click
 
       #submitter phone
       driver.find_element(:css, 'input[ng-model="vm.form.formData.submitter.phone"]').send_keys('5552345678')
@@ -143,9 +148,24 @@ class Api::V1::AutomationController < ApplicationController
 
       #submit
       #driver.find_element(:css, 'button[type="submit"]').click
+      #
+      #should probably write an acceptance page capture that we can send back to the user
 
       #quit the driver
-      #driver.quit
+      @log = driver.find_element(:tag_name, 'flash-messages').text
+
+      if (@log.present?)
+        @errors = driver.find_elements(:class, 'error')
+        @error_items = ""
+        @errors.each { |error|
+            @error_items += error.text + ", "
+        }
+        @log = "Error present! " + @log + " " + @error_items
+        sleep 2
+        driver.quit
+      else
+        #driver.quit
+      end
     end
   end
 

@@ -26,11 +26,12 @@ class Api::V1::AutomationController < ApplicationController
   end
 
   def event_submit(params)
-    require "selenium-webdriver"
-    require "rubygems"
+
+    headless = Headless.new
+    headless.start
 
     #set the browser that we will use to chrome for testing
-    driver = Selenium::WebDriver.for(:chrome)
+    driver = Selenium::WebDriver.for(:firefox)
 
     #give the driver a url to visit
     driver.navigate.to "https://www.spingo.com/submit/info?eventType=promote"
@@ -162,9 +163,10 @@ class Api::V1::AutomationController < ApplicationController
         }
         @log = "Error present! " + @log + " " + @error_items
         sleep 2
-        driver.quit
+        headless.destroy
       else
-        #driver.quit
+        headless.destroy
+        @log = "complete, no errors!"
       end
     end
   end

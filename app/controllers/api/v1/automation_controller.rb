@@ -52,9 +52,15 @@ class Api::V1::AutomationController < ApplicationController
     driver.find_element(:id, 'title').send_keys(params[:body])
 
     #venue
-    driver.find_element(:id, 'venue').send_keys(nul_check(params[:location]))
+    driver.find_element(:id, 'venue').send_keys("a")
+    driver.find_element(:class, 'create-venue-text').click
+    #<div class="create-venue-text">Cant find your venue?</div>
     sleep 2
-    driver.find_element(:id, 'venue').send_keys(:arrow_down, :return)
+    driver.find_element(:id, 'venueTitle').send_keys(nul_check("My House"))
+    driver.find_element(:name, 'venueStreet').send_keys(nul_check("123 Main St."))
+    driver.find_element(:name, 'venueCity').send_keys(nul_check("Springfield"))
+    driver.find_element(:name, 'venueState').send_keys(nul_check("OR"))
+    driver.find_element(:name, 'venuePostalCode').send_keys(nul_check("97000"))
 
     #class date-picker-input
     driver.find_element(:class, 'date-picker-input').send_keys("Dec 17, 2015")

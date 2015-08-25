@@ -49,36 +49,48 @@ class Api::V1::AutomationController < ApplicationController
     #data is hard coded.
 
     #title
+    puts "title"
     driver.find_element(:id, 'title').send_keys(params[:body])
 
     #venue
+    puts "venue"
     driver.find_element(:id, 'venue').send_keys("a")
     sleep 2
+    puts "can't find your venue"
     driver.find_element(:xpath, "/html/body/div[1]/div/div[1]/div[2]/div/div[1]/ng-form/ui-view/div/form/div[3]/div/div[1]/div/div/div/div/div").click
     sleep 2
+    puts "venue title"
     driver.find_element(:id, 'venueTitle').send_keys(nul_check("My House"))
     driver.find_element(:name, 'venueStreet').send_keys(nul_check("123 Main St."))
     sleep 1
+    puts "venue city"
     driver.find_element(:name, 'venueCity').send_keys(nul_check("Springfield"))
     sleep 1
+    puts "venue state"
     driver.find_element(:name, 'venueState').clear()
     sleep 1
     driver.find_element(:name, 'venueState').send_keys(nul_check("OR"))
+    puts 'venue state'
     sleep 1
     driver.find_element(:name, 'venuePostalCode').clear()
+    puts 'venue postal code'
     sleep 1
     driver.find_element(:name, 'venuePostalCode').send_keys(nul_check("97000"))
 
     #class date-picker-input
+    puts 'date picker'
     driver.find_element(:class, 'date-picker-input').send_keys("Dec 17, 2015")
 
     #class time-picker-input
+    puts 'time picker'
     driver.find_element(:class, 'time-picker-input').send_keys('11:00am', :tab, '2:00pm', :tab)
 
     #description
+    puts 'description'
     driver.find_element(:id, 'description').send_keys(nul_check(params[:body_text]))
 
     #attendance - 1-50, 50-100, 100-250, 250-500, 500-1000, 1000-2500, 2500+
+    puts 'attendance'
     select = driver.find_element(:id, 'attendance')
     options = select.find_elements(:tag_name, 'option')
     options.each do |option|
@@ -88,6 +100,7 @@ class Api::V1::AutomationController < ApplicationController
     end
 
     #category - dropdown
+    puts 'category'
     select = driver.find_element(:id, 'category')
     options = select.find_elements(:tag_name, 'option')
     options.each do |option|
@@ -96,6 +109,7 @@ class Api::V1::AutomationController < ApplicationController
       end
     end
     # <div class="select-wrapper"><select> "admission" -> price
+    puts 'admission'
     admission = driver.find_elements(:tag_name, 'option')
     admission.each do |element|
       if (params[:price].present?)
@@ -117,6 +131,7 @@ class Api::V1::AutomationController < ApplicationController
     end
 
     #button next
+    puts 'next'
     buttons = driver.find_element(:tag_name, 'button')
 
     if buttons.text == "NEXT"
@@ -140,24 +155,31 @@ class Api::V1::AutomationController < ApplicationController
       #page 2
       #media
       wait.until { driver.find_element(:css, 'input[ng-model="imageUrl"]') }
+      puts 'images'
       driver.find_element(:css, 'input[ng-model="imageUrl"]').send_keys(nul_check(params[:image_url]))
 
       #event contact
+      puts 'event contact'
       driver.find_element(:css, 'input[ng-model="vm.form.formData.basicInfo.phone"]').send_keys('5551234567')
       #event email
+      puts 'event email'
       driver.find_element(:css, 'input[ng-model="vm.form.formData.basicInfo.email"]').send_keys('example@example.com')
 
       #if personal != event
       #driver.find_element(:css, 'label[ng-model="vm.sameContact').click
 
       #submitter phone
+      puts 'submitter phone'
       driver.find_element(:css, 'input[ng-model="vm.form.formData.submitter.phone"]').send_keys('5552345678')
       #submitter email
+      puts 'submitter email'
       driver.find_element(:css, 'input[ng-model="vm.form.formData.submitter.email"]').send_keys(:control, :backspace, 'example@example.com')
       #submitter name
+      puts 'submitter name'
       driver.find_element(:css, 'input[ng-model="vm.form.formData.submitter.name"]').send_keys(nul_check(params[:author]))
 
       #don't send me news
+      puts 'no news'
       driver.find_element(:css, 'label[ng-model="vm.form.formData.interests.newsletter"]').click
 
       #submit

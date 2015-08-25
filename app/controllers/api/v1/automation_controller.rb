@@ -31,7 +31,7 @@ class Api::V1::AutomationController < ApplicationController
     headless.start
 
     #set the browser that we will use to chrome for testing
-    driver = Selenium::WebDriver.for(:firefox)
+    driver = Selenium::WebDriver.for(:chrome)
 
     #give the driver a url to visit
     driver.navigate.to "https://www.spingo.com/submit/info?eventType=promote"
@@ -53,8 +53,8 @@ class Api::V1::AutomationController < ApplicationController
 
     #venue
     driver.find_element(:id, 'venue').send_keys("a")
-    driver.find_element(:class, 'create-venue-text').click
-    #<div class="create-venue-text">Cant find your venue?</div>
+    sleep 2
+    driver.find_element(:xpath, "/html/body/div[1]/div/div[1]/div[2]/div/div[1]/ng-form/ui-view/div/form/div[3]/div/div[1]/div/div/div/div/div").click
     sleep 2
     driver.find_element(:id, 'venueTitle').send_keys(nul_check("My House"))
     driver.find_element(:name, 'venueStreet').send_keys(nul_check("123 Main St."))

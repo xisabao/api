@@ -150,7 +150,7 @@ class Api::V1::AutomationController < ApplicationController
       }
       @log = "Error present! " + @log + " " + @error_items
       sleep 2
-      driver.quit
+      #driver.quit
     else
       #page 2
       #media
@@ -166,11 +166,12 @@ class Api::V1::AutomationController < ApplicationController
       driver.find_element(:css, 'input[ng-model="vm.form.formData.basicInfo.email"]').send_keys('example@example.com')
 
       #if personal != event
-      #driver.find_element(:css, 'label[ng-model="vm.sameContact').click
+      driver.find_element(:css, 'label[ng-model="vm.sameContact').click
 
       #submitter phone
       puts 'submitter phone'
-      driver.find_element(:css, 'input[ng-model="vm.form.formData.submitter.phone"]').send_keys('5552345678')
+      #driver.find_element(:css, 'input[ng-model="vm.form.formData.submitter.phone"]').send_keys('5552345678')
+      driver.find_element(:name, 'submitterPhone').send_keys('5552345678')
       #submitter email
       puts 'submitter email'
       driver.find_element(:css, 'input[ng-model="vm.form.formData.submitter.email"]').send_keys(:control, :backspace, 'example@example.com')

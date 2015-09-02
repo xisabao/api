@@ -53,7 +53,7 @@ class Api::V1::AutomationController < ApplicationController
 
     #title
     puts "title"
-    @log += "\n" + "title"
+    @log += "\n" + "title: #{params[:body]}"
     driver.find_element(:id, 'title').send_keys(params[:body])
 
     #venue
@@ -65,13 +65,17 @@ class Api::V1::AutomationController < ApplicationController
     driver.find_element(:xpath, "/html/body/div[1]/div/div[1]/div[2]/div/div[1]/ng-form/ui-view/div/form/div[3]/div/div[1]/div/div/div/div/div").click
     sleep 2
     puts "venue title"
+    @log += "\n" + "venue title: #{params[:venue]}"
     driver.find_element(:id, 'venueTitle').send_keys(nul_check(params[:venue]))
+    @log += "\n" + "venue address: #{params[:address]}"
     driver.find_element(:name, 'venueStreet').send_keys(nul_check(params[:address]))
     sleep 1
     puts "venue city"
+    @log += "\n" + "venue city: #{params[:city]}"
     driver.find_element(:name, 'venueCity').send_keys(nul_check(params[:city]))
     sleep 1
     puts "venue state"
+    @log += "\n" + "venue state: #{params[:state]}"
     driver.find_element(:name, 'venueState').clear()
     sleep 1
     driver.find_element(:name, 'venueState').send_keys(nul_check(params[:state]))
@@ -79,23 +83,28 @@ class Api::V1::AutomationController < ApplicationController
     sleep 1
     driver.find_element(:name, 'venuePostalCode').clear()
     puts 'venue postal code'
+    @log += "\n" + "venue postal code: #{params[:postal_code]}"
     sleep 1
     driver.find_element(:name, 'venuePostalCode').send_keys(nul_check(params[:postal_code]))
 
     #class date-picker-input
     puts 'date picker'
+    @log += "\n" + "date picker: #{"???"}"
     driver.find_element(:class, 'date-picker-input').send_keys("Dec 17, 2015")
 
     #class time-picker-input
     puts 'time picker'
+    @log += "\n" + "time picker: #{"???"}"
     driver.find_element(:class, 'time-picker-input').send_keys('11:00am', :tab, '2:00pm', :tab)
 
     #description
     puts 'description'
+    @log += "\n" + "date picker: #{params[:body_text]}"
     driver.find_element(:id, 'description').send_keys(nul_check(params[:body_text]))
 
     #attendance - 1-50, 50-100, 100-250, 250-500, 500-1000, 1000-2500, 2500+
     puts 'attendance'
+    @log += "\n" + "attendance: #{"???"}"
     select = driver.find_element(:id, 'attendance')
     options = select.find_elements(:tag_name, 'option')
     options.each do |option|
@@ -106,6 +115,7 @@ class Api::V1::AutomationController < ApplicationController
 
     #category - dropdown
     puts 'category'
+    @log += "\n" + "category: #{"???"}"
     select = driver.find_element(:id, 'category')
     options = select.find_elements(:tag_name, 'option')
     options.each do |option|
@@ -118,6 +128,7 @@ class Api::V1::AutomationController < ApplicationController
     admission = driver.find_elements(:tag_name, 'option')
     admission.each do |element|
       if (params[:price].present?)
+        @log += "\n" + "admission: #{params[:price]}"
         if element.text == "Price"
           element.click
           # then the price element
@@ -145,20 +156,20 @@ class Api::V1::AutomationController < ApplicationController
 
     sleep 2
 
-    # flash_message = driver.find_element(:tag_name, 'flash-messages')
+    flash_message = driver.find_element(:tag_name, 'flash-messages')
 
-    # if ( flash_message.present? )
-    #   puts "flash message"
-    #   @log += driver.find_element(:tag_name, 'flash-messages').text
-    #   @errors = driver.find_elements(:class, 'error')
-    #   @error_items = ""
-    #   @errors.each { |error|
-    #       @error_items += error.text + ", "
-    #   }
-    #   @log = "Error present! " + @log + " " + @error_items
-    #   sleep 2
-    #   driver.quit
-    # else
+    if ( flash_message.present? )
+      puts "flash message"
+      @log += driver.find_element(:tag_name, 'flash-messages').text
+      @errors = driver.find_elements(:class, 'error')
+      @error_items = ""
+      @errors.each { |error|
+          @error_items += error.text + ", "
+      }
+      @log = "Error present! " + @log + " " + @error_items
+      sleep 2
+      driver.quit
+    else
       #page 2
       #media
       wait.until { driver.find_element(:class, 'media-links') }
@@ -192,12 +203,21 @@ class Api::V1::AutomationController < ApplicationController
 
       #submit
       #driver.find_element(:css, 'button[type="submit"]').click
-      #
-      #acceptance page capture that we can send back to the user
-      #@log += driver.find_element(:class , 'sg-message').text
+
+
+      begin
+        wait.until { driver.find_element(:class => "title-header") }
+        #acceptance page capture that we can send back to the user
+        @log += driver.find_element(:class , 'sg-message').text
+      rescue Selenium::WebDriver::Error::TimeOutError
+        @log += "\n timeout error on submission"
+        driver.quit
+      end
 
       #quit the driver
-      @log += driver.find_element(:tag_name, 'flash-messages').text
+      if (driver.find_element(:tag_name, 'flash-messages').displayed?)
+        @log += driver.find_element(:tag_name, 'flash-messages').text
+      end
 
       if (@log.present?)
         @errors = driver.find_elements(:class, 'error')
@@ -212,7 +232,7 @@ class Api::V1::AutomationController < ApplicationController
         headless.destroy
         @log += "\n Complete, no errors!"
       end
-#    end
+    end
 
   end
 

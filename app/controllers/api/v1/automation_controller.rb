@@ -26,6 +26,7 @@ class Api::V1::AutomationController < ApplicationController
   end
 
   def event_submit(params)
+    @log = ""
 
     headless = Headless.new
     headless.start
@@ -52,33 +53,34 @@ class Api::V1::AutomationController < ApplicationController
 
     #title
     puts "title"
+    @log += "\n" + "title"
     driver.find_element(:id, 'title').send_keys(params[:body])
 
     #venue
     puts "venue"
-    @log += "\nvenue\n"
+    @log += "\n" + "venue"
     driver.find_element(:id, 'venue').send_keys("a")
     sleep 2
     puts "can't find your venue"
     driver.find_element(:xpath, "/html/body/div[1]/div/div[1]/div[2]/div/div[1]/ng-form/ui-view/div/form/div[3]/div/div[1]/div/div/div/div/div").click
     sleep 2
     puts "venue title"
-    driver.find_element(:id, 'venueTitle').send_keys(nul_check("My House"))
-    driver.find_element(:name, 'venueStreet').send_keys(nul_check("123 Main St."))
+    driver.find_element(:id, 'venueTitle').send_keys(nul_check(params[:venue]))
+    driver.find_element(:name, 'venueStreet').send_keys(nul_check(params[:address]))
     sleep 1
     puts "venue city"
-    driver.find_element(:name, 'venueCity').send_keys(nul_check("Springfield"))
+    driver.find_element(:name, 'venueCity').send_keys(nul_check(params[:city]))
     sleep 1
     puts "venue state"
     driver.find_element(:name, 'venueState').clear()
     sleep 1
-    driver.find_element(:name, 'venueState').send_keys(nul_check("OR"))
+    driver.find_element(:name, 'venueState').send_keys(nul_check(params[:state]))
     puts 'venue state'
     sleep 1
     driver.find_element(:name, 'venuePostalCode').clear()
     puts 'venue postal code'
     sleep 1
-    driver.find_element(:name, 'venuePostalCode').send_keys(nul_check("97000"))
+    driver.find_element(:name, 'venuePostalCode').send_keys(nul_check(params[:postal_code]))
 
     #class date-picker-input
     puts 'date picker'

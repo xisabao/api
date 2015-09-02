@@ -12,9 +12,9 @@ class Api::V1::AutomationController < ApplicationController
 
     respond_to do |format|
       if ( @log.present? )
-        format.json { render text: "Error: " + @log }
+        format.json { render text: "Log: " + @log }
       else
-        format.json { render text: "Complete, no errors" }
+        format.json { render text: "Error, no log" }
       end
     end
 
@@ -30,6 +30,8 @@ class Api::V1::AutomationController < ApplicationController
     headless = Headless.new
     headless.start
 
+    #initialize the log
+    @log = ""
     #set the browser that we will use to chrome for testing
     driver = Selenium::WebDriver.for(:firefox)
 
@@ -54,6 +56,7 @@ class Api::V1::AutomationController < ApplicationController
 
     #venue
     puts "venue"
+    @log += "\nvenue\n"
     driver.find_element(:id, 'venue').send_keys("a")
     sleep 2
     puts "can't find your venue"
@@ -140,21 +143,23 @@ class Api::V1::AutomationController < ApplicationController
 
     sleep 2
 
-    @log = driver.find_element(:tag_name, 'flash-messages').text
+    # flash_message = driver.find_element(:tag_name, 'flash-messages')
 
-    if (@log.present?)
-      @errors = driver.find_elements(:class, 'error')
-      @error_items = ""
-      @errors.each { |error|
-          @error_items += error.text + ", "
-      }
-      @log = "Error present! " + @log + " " + @error_items
-      sleep 2
-      #driver.quit
-    else
+    # if ( flash_message.present? )
+    #   puts "flash message"
+    #   @log += driver.find_element(:tag_name, 'flash-messages').text
+    #   @errors = driver.find_elements(:class, 'error')
+    #   @error_items = ""
+    #   @errors.each { |error|
+    #       @error_items += error.text + ", "
+    #   }
+    #   @log = "Error present! " + @log + " " + @error_items
+    #   sleep 2
+    #   driver.quit
+    # else
       #page 2
       #media
-      wait.until { driver.find_element(:css, 'input[ng-model="imageUrl"]') }
+      wait.until { driver.find_element(:class, 'media-links') }
       puts 'images'
       driver.find_element(:css, 'input[ng-model="imageUrl"]').send_keys(nul_check(params[:image_url]))
 
@@ -186,10 +191,11 @@ class Api::V1::AutomationController < ApplicationController
       #submit
       #driver.find_element(:css, 'button[type="submit"]').click
       #
-      #should probably write an acceptance page capture that we can send back to the user
+      #acceptance page capture that we can send back to the user
+      #@log += driver.find_element(:class , 'sg-message').text
 
       #quit the driver
-      @log = driver.find_element(:tag_name, 'flash-messages').text
+      @log += driver.find_element(:tag_name, 'flash-messages').text
 
       if (@log.present?)
         @errors = driver.find_elements(:class, 'error')
@@ -202,9 +208,9 @@ class Api::V1::AutomationController < ApplicationController
         headless.destroy
       else
         headless.destroy
-        @log = "complete, no errors!"
+        @log += "\n Complete, no errors!"
       end
-    end
+#    end
 
   end
 

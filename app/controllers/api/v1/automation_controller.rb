@@ -7,7 +7,6 @@ class Api::V1::AutomationController < ApplicationController
 
   def create
 
-    @thing = params[:json_event]
     event_submit(params[:json_event])
 
     respond_to do |format|
@@ -112,7 +111,6 @@ class Api::V1::AutomationController < ApplicationController
         option.click
       end
     end
-
     #category - dropdown
     puts 'category'
     @log += "\n" + "category: #{"???"}"

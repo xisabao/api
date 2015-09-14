@@ -12,6 +12,7 @@ MarketPlaceApi::Application.routes.draw do
       resources :sessions, :only => [:create, :destroy]
       resources :products, :only => [:show, :index]
       resources :automation, :only => [:index, :create]
+      resources :oregonlive, :only => [:index, :create]
     end
   end
 end

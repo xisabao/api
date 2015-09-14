@@ -61,6 +61,7 @@ GEM
       sass (~> 3.2.19)
     compass-rails (2.0.0)
       compass (>= 0.12.2)
+    deathbycaptcha (5.0.1)
     devise (3.5.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -232,6 +233,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.0.0)
   compass-rails
+  deathbycaptcha
   devise
   factory_girl_rails
   ffaker

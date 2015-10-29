@@ -149,6 +149,10 @@ GEM
     rdoc (4.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rspec (3.3.0)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
     rspec-collection_matchers (1.1.2)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.3.2)
@@ -245,6 +249,7 @@ DEPENDENCIES
   pg
   rails
   rails_12factor
+  rspec
   rspec-collection_matchers
   rspec-rails
   sabisu_rails

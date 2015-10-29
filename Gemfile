@@ -30,6 +30,7 @@ gem 'furatto'
 gem 'font-awesome-rails'
 gem 'simple_form'
 gem 'deathbycaptcha'
+gem 'rspec/core'
 
 #Production
 gem 'pg'

@@ -34,6 +34,7 @@ gem 'rspec'
 
 #Production
 gem 'pg'
+gem 'unicorn'
 
 #Driver gems
 gem 'watir-extensions-element-screenshot'

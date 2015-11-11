@@ -24,47 +24,54 @@ class Api::V1::OregonliveController < ApplicationController
     return param
   end
 
+def iso_time(param)
+  military_time = param[/(?<=T)\d+/]
+  time = Time.strptime( military_time , '%H%M%S').strftime('%I:%M %P')
+  #setup the date
+  date = DateTime.parse(param).iso8601
+  date = Time.parse(date).strftime("%m/%d/%Y")
+
+  return date + " " + time
+
+  end
+
   def event_submit(params)
     @log = ""
-
-    headless = Headless.new
-    headless.start
 
     #initialize the log
     @log = ""
     #set the browser that we will use to chrome for testing
-    driver = Selenium::WebDriver.for(:firefox)
+    browser = Watir::Browser.new
 
     #give the driver a url to visit
-    driver.navigate.to "http://myevent.oregonlive.com/web/event.php"
+    browser.goto "http://myevent.oregonlive.com/web/event.php"
+    @log += browser.title
 
-    #this block makes the driver wait till the page is loaded before continuing on.
-    wait = Selenium::WebDriver::Wait.new(:timeout => 20)
-    wait.until { driver.find_element(:name, "EventTitle") }
+    browser.text_field(:name => "EventTitle").wait_until_present
 
-    #Oregon Live Specific automation
-    #each of the following finds an element, by one of several means and enters a value
-
-    #title
-    puts "title"
     @log += "\n" + "title: #{params[:event_title]}"
-    driver.find_element(:name, 'EventTitle').send_keys(nul_check(params[:event_title]))
-    #category
-    #is an array use the first element when you come back to this
+    browser.text_field(:name => 'EventTitle').set nul_check(params[:event_title])
 
-    #location
-    puts "location"
-    @log += "\n" + "location: #{params[:location]}"
-    driver.find_element(:name, 'EventVenueSearch').send_keys(nul_check(params[:location]))
+    puts "category"
+    @log += "\n" + "url: #{params[:category]}"
+    browser.select_list(:id => 'CategoryID').option(:text => "Books").select
+
+    #venue
+    @log += "\n" + "venue : #{params[:venue]}"
+    browser.text_field(:name => 'EventVenueSearch').set nul_check(params[:venue])
+    browser.element(:class => "ui-menu-item").wait_until_present
+    browser.send_keys :tab
 
     #date
     puts "date"
-    @log += "\n" + "date: #{params[:dtstart].to_date}"
-    driver.find_element(:name, 'EventDateString').send_keys(params[:dtstart].to_date)
+    date_time = iso_time(params[:dtstart])
+    #split the time out of the date string as well
+    @log += "\n" + "date: #{date_time}"
+    browser.text_field(:name => 'EventDateString').set date_time
 
     puts "description"
     @log += "\n" + "description: #{params[:body_text]}"
-    driver.find_element(:name, 'EventLongDescription').send_keys(nul_check(params[:body_text]))
+    browser.text_field(:name => 'EventLongDescription').set nul_check(params[:body_text])
 
     puts "price"
     @log += "\n" + "price: #{params[:price]}"
@@ -73,47 +80,56 @@ class Api::V1::OregonliveController < ApplicationController
     else
       price = params[:price]
     end
-    driver.find_element(:name, 'EventPrice').send_keys(price)
+    browser.text_field(:name => 'EventPrice').set price
 
     puts "phone"
     @log += "\n" + "phone: #{params[:phone]}"
-    driver.find_element(:name, 'EventPhoneNumber').send_keys(nul_check(params[:phone]))
+    browser.text_field(:name => 'EventPhoneNumber').set nul_check(params[:phone])
 
     puts "url"
     @log += "\n" + "url: #{params[:url]}"
-    driver.find_element(:name, 'EventURL').send_keys(nul_check(params[:url]))
+    browser.text_field(:name => 'EventURL').set nul_check(params[:url])
 
     puts "name"
     @log += "\n" + "name: #{params[:first_name] + " " + params[:last_name]}"
     name = nul_check(params[:first_name]) + " " + nul_check(params[:last_name])
-    driver.find_element(:name, 'EventCustomAttrib198').send_keys(name)
+    browser.text_field(:name => 'EventCustomAttrib198').set name
 
     puts "phone"
     @log += "\n" + "phone: #{params[:phone]}"
-    driver.find_element(:name, 'EventCustomAttrib199').send_keys(nul_check(params[:phone]))
+    browser.text_field(:name => 'EventCustomAttrib199').set nul_check(params[:phone])
 
     puts "email"
     @log += "\n" + "email: #{params[:email]}"
-    driver.find_element(:name, 'EventCustomAttrib200').send_keys(nul_check(params[:email]))
+    browser.text_field(:name => 'EventCustomAttrib200').set nul_check(params[:email])
 
-    puts "email"
-    @log += "\n" + "email: #{params[:email]}"
-    driver.find_element(:name, 'EventCustomAttrib200').send_keys(nul_check(params[:email]))
-
-    #captcha
     client = DeathByCaptcha.new('cga', 'codeguild2015', :http)
 
+
     if browser.img(:id, 'recaptcha_challenge_image').exists?
-      captcha_url = driver.image(:id => 'recaptcha_challenge_image').src
+      @log += "\n recaptcha"
+      captcha_url = browser.image(:id => 'recaptcha_challenge_image').src
       captcha = client.decode!(url: captcha_url)
       browser.text_field(:id => 'recaptcha_response_field').set captcha.text
-      driver.find_element(:name, 'security_code').send_keys(captcha.text)
     else
+      @log += "\n security image"
       browser.div(:id => 'Security_Image').screenshot('captcha_image.png')
       captcha = client.decode!(path: 'captcha_image.png')
-      driver.find_element(:name, 'security_code').send_keys(captcha.text)
+      browser.text_field(:id => 'security_code').set captcha.text
       File.delete('captcha_image.png')
     end
+
+    #make the submission
+    browser.button(:value => "Preview").click
+
+    if browser.div(:class => "suportLinkContainer").exists?
+      @log += "Errors!  " + browser.div(:class => "suportLinkContainer").text
+    elsif browser.text.include? "If all the information below is accurate, click \"Submit\" below."
+      browser.button(:id => "Submit_Event").click
+      @log += "\nSubmitted event!"
+    end
+
+    #browser.quit
 
   end
 

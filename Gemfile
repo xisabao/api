@@ -40,10 +40,9 @@ gem 'unicorn'
 gem 'watir-extensions-element-screenshot'
 gem 'selenium-webdriver'
 gem 'chromedriver-helper'
-gem 'watir-webdriver-rails'
 gem 'headless'
 gem 'nokogiri'
-gem 'watir'
+gem 'watir-webdriver'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

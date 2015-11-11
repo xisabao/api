@@ -58,7 +58,15 @@ class Api::V1::AutomationController < ApplicationController
     #venue
     puts "venue"
     @log += "\n" + "venue"
-    driver.find_element(:id, 'venue').send_keys("a")
+    venue = driver.find_element(:id, 'venue')
+    value = driver.find_element(:id, '_value')
+
+    if venue.present?
+      driver.find_element(:id, 'venue').send_keys("a")
+    elsif value.present?
+      driver.find_element(:id, '_value').send_keys("a")
+    end
+
     sleep 2
     puts "can't find your venue"
     driver.find_element(:xpath, "/html/body/div[1]/div/div[1]/div[2]/div/div[1]/ng-form/ui-view/div/form/div[3]/div/div[1]/div/div/div/div/div").click

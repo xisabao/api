@@ -36,7 +36,6 @@ def iso_time(param)
   end
 
   def event_submit(params)
-    @log = ""
 
     #initialize the log
     @log = ""
@@ -103,31 +102,52 @@ def iso_time(param)
     @log += "\n" + "email: #{params[:email]}"
     browser.text_field(:name => 'EventCustomAttrib200').set nul_check(params[:email])
 
-    client = DeathByCaptcha.new('cga', 'codeguild2015', :http)
+    def captcha(browser)
 
+      client = DeathByCaptcha.new('cga', 'codeguild2015', :http)
 
-    if browser.img(:id, 'recaptcha_challenge_image').exists?
-      @log += "\n recaptcha"
-      captcha_url = browser.image(:id => 'recaptcha_challenge_image').src
-      captcha = client.decode!(url: captcha_url)
-      browser.text_field(:id => 'recaptcha_response_field').set captcha.text
-    else
-      @log += "\n security image"
-      browser.div(:id => 'Security_Image').screenshot('captcha_image.png')
-      captcha = client.decode!(path: 'captcha_image.png')
-      browser.text_field(:id => 'security_code').set captcha.text
-      File.delete('captcha_image.png')
+      if browser.img(:id, 'recaptcha_challenge_image').exists?
+        @log += "\n recaptcha"
+        captcha_url = browser.image(:id => 'recaptcha_challenge_image').src
+        captcha = client.decode!(url: captcha_url)
+        browser.text_field(:id => 'recaptcha_response_field').set captcha.text
+      else
+        @log += "\n security image"
+        browser.div(:id => 'Security_Image').screenshot('captcha_image.png')
+        captcha = client.decode!(path: 'captcha_image.png')
+        browser.text_field(:id => 'security_code').set captcha.text
+        File.delete('captcha_image.png')
+      end
+
     end
+
+    captcha browser
 
     #make the submission
-    browser.button(:value => "Preview").click
+    if browser.button(:value => "Preview").exists?
 
-    if browser.div(:class => "suportLinkContainer").exists?
-      @log += "Errors!  " + browser.div(:class => "suportLinkContainer").text
-    elsif browser.text.include? "If all the information below is accurate, click \"Submit\" below."
-      browser.button(:id => "Submit_Event").click
-      @log += "\nSubmitted event!"
+      browser.button(:value => "Preview").click
+
+      if browser.div(:class => "suportLinkContainer").exists?
+        @log += "Errors!  " + browser.div(:class => "suportLinkContainer").text
+      elsif browser.text.include? "If all the information below is accurate, click \"Submit\" below."
+        browser.button(:id => "Submit_Event").click
+        @log += "\nSubmitted event!"
+      end
+    else
+        browser.button(:id => "Submit_Event").click
+        @log += "\nSubmitted event!"
     end
+
+    #browser.div(:class => "preview_header").wait_until_present
+
+      if browser.button(:title => "Submit New Event").exists?
+        #collect the page to send back
+        @log += "\nResponse: " + browser.html
+      else
+        @log += "\nError: " + browser.html
+      end
+
 
     #browser.quit
 

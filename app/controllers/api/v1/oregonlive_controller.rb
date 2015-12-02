@@ -149,7 +149,7 @@ def iso_time(param)
       end
 
 
-    #browser.quit
+    browser.quit
 
   end
 

@@ -31,9 +31,11 @@ gem 'font-awesome-rails'
 gem 'simple_form'
 gem 'deathbycaptcha'
 gem 'rspec'
+gem 'que'
 
 #Production
 gem 'pg'
+gem 'taps'
 gem 'unicorn'
 
 #Driver gems

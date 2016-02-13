@@ -51,10 +51,6 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-group :development do
-  gem 'sqlite3'
-end
-
 group :development, :test do
   gem "factory_girl_rails"
   gem 'ffaker'

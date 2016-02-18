@@ -32,6 +32,7 @@ gem 'simple_form'
 gem 'deathbycaptcha'
 gem 'rspec'
 gem 'que'
+gem 'rails_admin'
 
 #Production
 gem 'pg'

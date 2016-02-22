@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160218170746) do
+ActiveRecord::Schema.define(version: 20160222225635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160218170746) do
     t.string   "subtype"
     t.text     "description"
     t.text     "details"
-    t.string   "link"
+    t.string   "url"
     t.text     "categories"
     t.text     "tags"
     t.string   "phone_number"
@@ -33,13 +33,17 @@ ActiveRecord::Schema.define(version: 20160218170746) do
     t.integer  "duration"
     t.datetime "ticket_deadline"
     t.boolean  "tickets_required"
-    t.float    "cost"
+    t.float    "price"
     t.boolean  "free"
     t.string   "contact_name"
     t.integer  "organizer_id"
     t.integer  "venue_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "timezone"
+    t.string   "image_url"
+    t.string   "ticketing_url"
+    t.string   "uid"
   end
 
   create_table "logs", force: :cascade do |t|
@@ -55,7 +59,7 @@ ActiveRecord::Schema.define(version: 20160218170746) do
     t.string   "address"
     t.string   "phone_number"
     t.string   "email"
-    t.string   "link"
+    t.string   "url"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
@@ -85,7 +89,7 @@ ActiveRecord::Schema.define(version: 20160218170746) do
     t.string   "address"
     t.string   "phone_number"
     t.string   "email"
-    t.string   "link"
+    t.string   "url"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end

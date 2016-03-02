@@ -9,8 +9,7 @@ class User < ActiveRecord::Base
 
   before_create :generate_authentication_token!
 
-  has_many :logs, dependent: :destroy
-  has_many :events, through: :logs
+  has_many :events
 
   def generate_authentication_token!
     begin

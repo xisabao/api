@@ -12,7 +12,7 @@ class EventsController < ApplicationController
 			city: event_params[:city],
 			state: event_params[:state],
 			country: event_params[:country],
-			postal_code: event_params[:postal_code]
+			postal_code: event_params[:postal_code],
 			timezone: event_params[:timezone],
 
 			price: event_params[:price],

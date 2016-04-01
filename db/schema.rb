@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302194801) do
+ActiveRecord::Schema.define(version: 20160302195118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,15 +21,15 @@ ActiveRecord::Schema.define(version: 20160302194801) do
     t.string   "country"
     t.string   "type"
     t.string   "subtype"
-    t.text     "description"
+    t.text     "body_text"
     t.text     "details"
     t.string   "url"
     t.text     "categories"
     t.text     "tags"
     t.string   "phone_number"
     t.boolean  "family_friendly"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "dstart"
+    t.datetime "dtend"
     t.integer  "duration"
     t.datetime "ticket_deadline"
     t.boolean  "tickets_required"
@@ -44,13 +44,21 @@ ActiveRecord::Schema.define(version: 20160302194801) do
     t.string   "image_url"
     t.string   "ticketing_url"
     t.string   "uid"
-    t.string   "fb_url"
+    t.string   "fb_event_url"
     t.string   "city"
     t.string   "postal_code"
     t.string   "address"
     t.string   "name"
     t.integer  "status"
     t.text     "log"
+  end
+
+  create_table "logs", force: :cascade do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.boolean  "success"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "organizers", force: :cascade do |t|

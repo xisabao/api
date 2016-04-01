@@ -4,9 +4,9 @@ class EventsController < ApplicationController
 	def create
 		e = current_user.events.build(
 			uid: event_params[:id],
-			start_time: event_params[:dstart],
-			end_time: event_params[:dtend],
-			description: event_params[:body_text],
+			dstart: event_params[:dstart],
+			dtend: event_params[:dtend],
+			body_text: event_params[:body_text],
 
 			address: event_params[:address],
 			city: event_params[:city],
@@ -19,7 +19,7 @@ class EventsController < ApplicationController
 
 			url: event_params[:url],
 			ticketing_url: event_params[:ticketing_url],
-			fb_url: event_params[:fb_event_url],
+			fb_event_url: event_params[:fb_event_url],
 			image_url: event_params[:image_url]
 		)
 		o = Organizer.find_or_create_by(name: event_params[:organization])
@@ -28,6 +28,7 @@ class EventsController < ApplicationController
 			postal_code: event_params[:postal_code])
 		e.organizer = o
 		e.venue = v
+		e.status = pending
 		if e.save
 			render json: e, status: 201
 		else

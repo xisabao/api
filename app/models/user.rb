@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   validates :auth_token, uniqueness: true
-
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

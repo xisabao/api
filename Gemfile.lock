@@ -56,12 +56,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-    compass (0.12.7)
-      chunky_png (~> 1.2)
-      fssm (>= 0.2.7)
-      sass (~> 3.2.19)
-    compass-rails (2.0.0)
-      compass (>= 0.12.2)
     deathbycaptcha (5.0.3)
     devise (3.5.6)
       bcrypt (~> 3.0)
@@ -82,12 +76,6 @@ GEM
     ffi (1.9.10)
     font-awesome-rails (4.5.0.1)
       railties (>= 3.2, < 5.1)
-    fssm (0.2.10)
-    furatto (1.4.0)
-      actionpack (>= 3.1)
-      activemodel (>= 3.1)
-      compass-rails (~> 2.0)
-      railties (>= 3.1.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -272,14 +260,10 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   chromedriver-helper
-  coffee-rails (~> 4.0.0)
-  compass-rails
   deathbycaptcha
   devise
   factory_girl_rails
   ffaker
-  font-awesome-rails
-  furatto
   headless
   jquery-rails
   nokogiri

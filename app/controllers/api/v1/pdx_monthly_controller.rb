@@ -48,5 +48,7 @@ class Api::V1::PdxMonthlyController < ApplicationController
 		browser.radio(id: "Field554_1").set
 
 		browser.button(value: "Submit").click
+
+		browser.quit
 	end
 end

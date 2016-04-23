@@ -24,5 +24,7 @@ class Api::V1::WineCountryController < ApplicationController
 		browser.text_field(name: "your-email").set(params[:email])
 
 		# deal with captcha
+
+		browser.quit
 	end
 end

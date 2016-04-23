@@ -33,5 +33,7 @@ class Api::V1::VisitSeattleController < ApplicationController
 
 		browser.button(value: "Submit").click
 		# browser.
+
+		browser.quit
 	end
 end

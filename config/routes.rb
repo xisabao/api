@@ -8,6 +8,9 @@ MarketPlaceApi::Application.routes.draw do
   namespace :api, defaults: { format: :json } do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :oregonlive, :only => [:index, :create]
+      resources :pdx_monthly, only: [:create]
+      resources :visit_seattle, only: [:create]
+      resources :wine_country, only: [:create]
       resources :test, :only => [:index, :create]
       resources :users, only: [:show, :create, :update, :destroy]
       resources :sessions, only: [:create, :destroy]

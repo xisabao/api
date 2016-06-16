@@ -7,6 +7,11 @@ module ApplicationHelper
 		time = Time.parse(t)
 		return time.strftime("%I:%M%p")
 	end
+
+	def get_meridian(t) 
+		time = Time.parse(t)
+		return time.strftime("%P")
+	end
 	def get_month(t)
 		time =Time.parse(t)
 		return time.strftime("%m")

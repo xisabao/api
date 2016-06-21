@@ -15,7 +15,7 @@
 	"address": "full address",
 	"street_address": "street_address",
 	"city": "city",
-	"state": "state",
+	"state": "state", //OR, WA, CA
 	"zip_code": "97000",
 	"region": "event region",
 	"venue_phone": "503xxxxxxx",

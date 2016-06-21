@@ -31,11 +31,17 @@ class Api::V1::SeattleTimesController < ApplicationController
 		browser.text_field(name: "ticket_url").set(params[:ticketing_url])
 		browser.text_field(name: "venue_name").set(params[:venue])
 		browser.text_field(name: "venue_phone").set(params[:venue_phone])
-		
+		browser.text_field(name: "venue_address").set(params[:street_address])
+		browser.text_field(name: "venue_city").set(params[:city])
+		browser.select_list(name: "venue_state").set(params[:state])
+		browser.text_field(name: "venue_zip").set(params[:zip_code])
+		browser.text_field(name: "venue_url").set(params[:venue_url])
 
+		browser.text_field(name: "submitter_name").set(params[:first_name] + " " + params[:last_name])
+		browser.text_field(name: "submitter_phone").set(params[:contact_phone])
+		browser.text_field(name: "submitter_email").set(params[:email])
 
-
-		# deal with captcha
+		browser.button(value: "Submit").click
 
 		browser.quit
 	end

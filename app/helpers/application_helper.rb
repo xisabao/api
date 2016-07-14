@@ -8,6 +8,13 @@ module ApplicationHelper
 		return time.strftime("%I:%M%p")
 	end
 
+	def hours_between(t1, t2)
+		time1 = Time.parse(t1)
+		time2 = Time.parse(t2)
+		time = time2 - time1
+		return time/3600
+	end
+
 	def get_meridian(t) 
 		time = Time.parse(t)
 		return time.strftime("%P")
@@ -15,6 +22,10 @@ module ApplicationHelper
 	def get_month(t)
 		time =Time.parse(t)
 		return time.strftime("%m")
+	end
+	def get_full_month_name(t)
+		time =Time.parse(t)
+		return time.strftime("%B")
 	end
 	def get_day(t)
 		time = Time.parse(t)

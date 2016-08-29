@@ -11,9 +11,17 @@ MarketPlaceApi::Application.routes.draw do
       resources :pdx_monthly, only: [:create]
       resources :visit_seattle, only: [:create]
       resources :wine_country, only: [:create]
+      resources :bellevue_reporter, only: [:create]
+      resources :concierge_alliange, only: [:create]
+      resources :great_northwest_wine, only: [:create]
+      resources :seattle_pi, only: [:create]
+      resources :seattle_times, only: [:create]
+      resources :visit_corvallis, only: [:create]
       resources :test, :only => [:index, :create]
       resources :users, only: [:show, :create, :update, :destroy]
       resources :sessions, only: [:create, :destroy]
     end
   end
+
+  resources :automation, only: [:create]
 end

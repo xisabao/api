@@ -1,4 +1,4 @@
-"event": {
+"event_params": {
 	"first_name": "John",
 	"last_name": "Doe", 
 	"email": "john_doe@gmail.com",
@@ -15,7 +15,7 @@
 	"address": "full address",
 	"street_address": "street_address",
 	"city": "city",
-	"state": "state", //OR, WA, CA
+	"state": "state", 
 	"zip_code": "97000",
 	"region": "event region",
 	"venue_phone": "503xxxxxxx",
@@ -28,5 +28,6 @@
 	"organizer_url": "dfasd",
 	"all_ages": "true",
 	"family_friendly": "true",
-	"all_day": "true"
+	"all_day": "true",
+	"endpoints": ["visit_seattle", "seattle_times"]
 }

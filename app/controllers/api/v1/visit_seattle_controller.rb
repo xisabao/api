@@ -32,7 +32,6 @@ class Api::V1::VisitSeattleController < ApplicationController
 		browser.text_field(id: "input_13_17").set(params[:organizer_url])
 
 		browser.button(value: "Submit").click
-		# browser.
 
 		browser.quit
 	end

@@ -12,7 +12,7 @@ module ApplicationHelper
 		time1 = Time.parse(t1)
 		time2 = Time.parse(t2)
 		time = time2 - time1
-		return time/3600
+		return time.strftime("%I")
 	end
 
 	def get_meridian(t) 
